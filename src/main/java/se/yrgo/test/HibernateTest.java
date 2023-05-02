@@ -19,24 +19,24 @@ public class HibernateTest {
 
         Transaction tx = session.beginTransaction();
 
-//        Tutor newTutor = new Tutor("ABC234", "Natalie Woodward", 387787);
-//        Student student1 = new Student("Patrik Howard","1-HOW-2017");
-//        Student student2 = new Student("Marie Sani", "2-SAN-2018");
-//        Student student3 = new Student("Tom Nikson", "3-NIK-2019");
-//        session.save(student1);
-//        session.save(student2);
-//        session.save(student3);
-//        session.save(newTutor);
-//        newTutor.addStudentToTeachingGroup(student1);
-//        newTutor.addStudentToTeachingGroup(student2);
-//        newTutor.addStudentToTeachingGroup(student3);
+        Tutor newTutor = new Tutor("ABC234", "Natalie Woodward", 387787);
+        Student student1 = new Student("Patrik Howard","1-HOW-2017");
+        Student student2 = new Student("Marie Sani", "2-SAN-2018");
+        Student student3 = new Student("Tom Nikson", "3-NIK-2019");
+        session.save(student1);
+        session.save(student2);
+        session.save(student3);
+        session.save(newTutor);
+        newTutor.addStudentToTeachingGroup(student1);
+        newTutor.addStudentToTeachingGroup(student2);
+        newTutor.addStudentToTeachingGroup(student3);
 
-        Tutor myTutor = (Tutor)session.get(Tutor.class, 4);
-        List<Student> students = myTutor.getTeachingGroup();
-
-        for(Student student: students) {
-            System.out.println(student);
-        }
+//        Tutor myTutor = (Tutor)session.get(Tutor.class, 4);
+//        List<Student> students = myTutor.getTeachingGroup();
+//
+//        for(Student student: students) {
+//            System.out.println(student);
+//        }
 
         tx.commit();
         session.close();

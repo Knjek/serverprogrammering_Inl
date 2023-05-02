@@ -8,20 +8,11 @@ public class Student
 {
     private String enrollmentID;
     private String name;
-//    @ManyToOne
-//    @JoinColumn(name="TUTOR_FK")
-//    private Tutor tutor; // This will become a class soon
     @Column (name="NUM_COURSES")
     private Integer numberOfCourses;
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)  //This line is optional
     private int id;
-//    public Student(String name, Tutor tutor)
-//    {
-//    	this.name = name;
-//    	this.tutor = tutor;
-//        this.numberOfCourses = 10;
-//    }
 
 
     public Student(String name, String enrollmentID)
@@ -49,15 +40,5 @@ public class Student
     public String getEnrollmentID() {
         return enrollmentID;
     }
-//    public void allocateTutor(Tutor tutor) {
-//        this.tutor=tutor;
-//    }
-//
-//    public String getTutorName() {
-//        return this.tutor.getName();
-//    }
-//
-//    public Tutor getTutor() {
-//        return tutor;
-//    }
+
 }
