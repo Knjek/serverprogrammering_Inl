@@ -7,6 +7,7 @@ import org.hibernate.cfg.Configuration;
 import se.yrgo.domain.Student;
 import se.yrgo.domain.Tutor;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,16 +32,11 @@ public class HibernateTest {
 //        newTutor.addStudentToTeachingGroup(student3);
 
         Tutor myTutor = (Tutor)session.get(Tutor.class, 4);
-        Map<String,Student>students = myTutor.getTeachingGroup();
+        List<Student> students = myTutor.getTeachingGroup();
 
-        for(Student student: students.values()) {
+        for(Student student: students) {
             System.out.println(student);
         }
-
-        Student s = students.get("3-NIK-2019");
-        System.out.println("found the student  " + s);
-
-
 
         tx.commit();
         session.close();

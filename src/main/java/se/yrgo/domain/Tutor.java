@@ -14,15 +14,14 @@ public class Tutor {
     private String name;
     private int salary;
     @OneToMany
-    @MapKey(name = "enrollmentID")
     @JoinColumn(name="TUTOR_FK")
-    private Map<String, Student> teachingGroup;
+    private List<Student> teachingGroup;
 
     public Tutor(String tutorId, String name, int salary) {
         this.tutorId = tutorId;
         this.name = name;
         this.salary = salary;
-        this.teachingGroup = new HashMap<>();
+        this.teachingGroup = new ArrayList<>();
     }
 
     public Tutor() {}
@@ -50,11 +49,11 @@ public class Tutor {
     }
 
     public void addStudentToTeachingGroup(Student newStudent) {
-        this.teachingGroup.put(newStudent.getEnrollmentID(), newStudent);
+        this.teachingGroup.add(newStudent);
     }
 
-    public Map<String, Student> getTeachingGroup() {
-        Map<String, Student>unmodifiable = Collections.unmodifiableMap(this.teachingGroup);
+    public List<Student> getTeachingGroup() {
+        List<Student> unmodifiable = Collections.unmodifiableList(this.teachingGroup);
         return unmodifiable;
     }
 
