@@ -13,14 +13,14 @@ public class Student
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)  //This line is optional
     private int id;
+    @Embedded
+    private Address address;
 
-
-    public Student(String name, String enrollmentID)
-    {
-    	this.name = name;
-//    	this.tutor = null;
-        this.numberOfCourses = 10;
+    public Student(String name, String enrollmentID, String street, String city, String zipcode) {
+        this.name = name;
         this.enrollmentID = enrollmentID;
+        this.numberOfCourses = 10;
+        this.address = new Address(street, city, zipcode);
     }
 
     public Student() {
@@ -30,7 +30,7 @@ public class Student
 
     @Override
     public String toString() {
-        return "Student name: " + name;
+        return name + " lives at: " + address.toString();
     }
 
     public int getId() {
@@ -41,4 +41,10 @@ public class Student
         return enrollmentID;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+    public void setAddress(Address newAddress) {
+        this.address = newAddress;
+    }
 }

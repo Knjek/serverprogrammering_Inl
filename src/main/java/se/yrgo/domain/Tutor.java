@@ -13,15 +13,15 @@ public class Tutor {
     private String tutorId;
     private String name;
     private int salary;
-    @OneToMany
+    @OneToMany (cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name="TUTOR_FK")
-    private List<Student> teachingGroup;
+    private Set<Student> teachingGroup;
 
     public Tutor(String tutorId, String name, int salary) {
         this.tutorId = tutorId;
         this.name = name;
         this.salary = salary;
-        this.teachingGroup = new ArrayList<>();
+        this.teachingGroup = new HashSet<>();
     }
 
     public Tutor() {}
@@ -40,21 +40,23 @@ public class Tutor {
 
     @Override
     public String toString() {
-        return "Tutor{" +
-                "id=" + id +
-                ", tutorId='" + tutorId + '\'' +
-                ", name='" + name + '\'' +
-                ", salary=" + salary +
-                '}';
+        return name;
     }
 
     public void addStudentToTeachingGroup(Student newStudent) {
         this.teachingGroup.add(newStudent);
     }
 
-    public List<Student> getTeachingGroup() {
-        List<Student> unmodifiable = Collections.unmodifiableList(this.teachingGroup);
+    public Set<Student> getTeachingGroup() {
+        Set<Student> unmodifiable = Collections.unmodifiableSet(this.teachingGroup);
         return unmodifiable;
     }
 
+    public void createStudentAndAddtoTeachingGroup(String studentName,
+                                                   String enrollmentID,String street, String city,
+                                                   String zipcode) {
+        Student student = new Student(studentName, enrollmentID,
+                street,city,zipcode);
+        this.addStudentToTeachingGroup(student);
+    }
 }

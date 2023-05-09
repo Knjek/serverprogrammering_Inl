@@ -1,54 +1,40 @@
 package se.yrgo.test;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import jakarta.persistence.*;
 import se.yrgo.domain.Student;
 import se.yrgo.domain.Tutor;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-public class HibernateTest {
-    private static SessionFactory sessionFactory = null;
+public class JPATest {
     public static void main(String[] args) {
-        SessionFactory sf = getSessionFactory();
-        Session session = sf.openSession();
+        EntityManagerFactory emf =
+                Persistence.createEntityManagerFactory("databaseConfig");
+        EntityManager em = emf.createEntityManager();
 
-        Transaction tx = session.beginTransaction();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
 
-        Tutor newTutor = new Tutor("ABC234", "Natalie Woodward", 387787);
-        Student student1 = new Student("Patrik Howard","1-HOW-2017");
-        Student student2 = new Student("Marie Sani", "2-SAN-2018");
-        Student student3 = new Student("Tom Nikson", "3-NIK-2019");
-        session.save(student1);
-        session.save(student2);
-        session.save(student3);
-        session.save(newTutor);
-        newTutor.addStudentToTeachingGroup(student1);
-        newTutor.addStudentToTeachingGroup(student2);
-        newTutor.addStudentToTeachingGroup(student3);
-
-//        Tutor myTutor = (Tutor)session.get(Tutor.class, 4);
-//        List<Student> students = myTutor.getTeachingGroup();
+//        Tutor t1 = new Tutor("ABC123", "Teacher 1", 290000);
+//        em.persist(t1);
 //
-//        for(Student student: students) {
-//            System.out.println(student);
-//        }
+//        t1.createStudentAndAddtoTeachingGroup("Eva  Sands", "1-SAN-2019",
+//                "street-1", "London", "4455");
+//        t1.createStudentAndAddtoTeachingGroup("Sam Everest", "2-EVE-2018",
+//                "street-2", "Paris", "6767");
+
+        String requiredName = "sam everest";
+        Query q=em.createQuery("FROM Student as student WHERE lower(student.name) =:name", Student.class);
+        q.setParameter("name", requiredName);
+        List<Student>QueryResult =q.getResultList();
+        for(Student st1:QueryResult) {
+            System.out.println(st1);
+        }
+
 
         tx.commit();
-        session.close();
+        em.close();
     }
 
-    private static SessionFactory getSessionFactory() {
-        if(sessionFactory == null) {
-            Configuration configuration = new Configuration();
-            configuration.configure();
-
-            sessionFactory = configuration.buildSessionFactory();
-        }
-        return sessionFactory;
-    }
 }
