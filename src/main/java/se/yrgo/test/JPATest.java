@@ -11,17 +11,15 @@ import java.util.Set;
 public class JPATest {
     public static EntityManagerFactory emf = Persistence.createEntityManagerFactory("databaseConfig");
     public static void main(String[] args) {
-        setUpData();
+//        setUpData();
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        String city = "city 2";
-        List<Tutor>results3 = em.createQuery("select distinct tutor from Tutor tutor join tutor.teachingGroup student where student.address.city = :city").setParameter("city", city).getResultList();
-        for(Tutor tutor:results3) {
-            System.out.println(tutor);
+        List<Student>students = em.createNativeQuery("select * from student", Student.class).getResultList();
+        for(Student student: students) {
+            System.out.println(student);
         }
-
 
         tx.commit();
         em.close();
