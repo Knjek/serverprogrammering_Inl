@@ -2,36 +2,65 @@ package se.yrgo.test;
 
 import jakarta.persistence.*;
 import se.yrgo.domain.Student;
+import se.yrgo.domain.Subject;
 import se.yrgo.domain.Tutor;
 
 import java.util.List;
 import java.util.Set;
 
 public class JPATest {
+    public static EntityManagerFactory emf = Persistence.createEntityManagerFactory("databaseConfig");
     public static void main(String[] args) {
-        EntityManagerFactory emf =
-                Persistence.createEntityManagerFactory("databaseConfig");
+        setUpData();
         EntityManager em = emf.createEntityManager();
-
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-//        Tutor t1 = new Tutor("ABC123", "Teacher 1", 290000);
-//        em.persist(t1);
-//
-//        t1.createStudentAndAddtoTeachingGroup("Eva  Sands", "1-SAN-2019",
-//                "street-1", "London", "4455");
-//        t1.createStudentAndAddtoTeachingGroup("Sam Everest", "2-EVE-2018",
-//                "street-2", "Paris", "6767");
-
-        String requiredName = "sam everest";
-        Query q=em.createQuery("FROM Student as student WHERE lower(student.name) =:name", Student.class);
-        q.setParameter("name", requiredName);
-        List<Student>QueryResult =q.getResultList();
-        for(Student st1:QueryResult) {
-            System.out.println(st1);
+        String city = "city 2";
+        List<Tutor>results3 = em.createQuery("select distinct tutor from Tutor tutor join tutor.teachingGroup student where student.address.city = :city").setParameter("city", city).getResultList();
+        for(Tutor tutor:results3) {
+            System.out.println(tutor);
         }
 
+
+        tx.commit();
+        em.close();
+    }
+
+    public static void setUpData(){
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+
+        Subject mathematics = new Subject("Mathematics", 2);
+        Subject science = new Subject("Science", 2);
+        Subject programming = new Subject("Programming", 3);
+        em.persist(mathematics);
+        em.persist(science);
+        em.persist(programming);
+
+        Tutor t1 = new Tutor("ABC123", "Johan Smith", 40000);
+        t1.addSubjectsToTeach(mathematics);
+        t1.addSubjectsToTeach(science);
+
+
+        Tutor t2 = new Tutor("DEF456", "Sara Svensson", 20000);
+        t2.addSubjectsToTeach(mathematics);
+        t2.addSubjectsToTeach(science);
+
+        // This tutor is the only tutor who can teach History
+        Tutor t3 = new Tutor("GHI678", "Karin Lindberg", 0);
+        t3.addSubjectsToTeach(programming);
+
+        em.persist(t1);
+        em.persist(t2);
+        em.persist(t3);
+
+
+        t1.createStudentAndAddtoTeachingGroup("Jimi Hendriks", "1-HEN-2019", "Street 1", "city 2", "1212");
+        t1.createStudentAndAddtoTeachingGroup("Bruce Lee", "2-LEE-2019", "Street 2", "city 2", "2323");
+        t3.createStudentAndAddtoTeachingGroup("Roger Waters", "3-WAT-2018", "Street 3", "city 3", "34343");
 
         tx.commit();
         em.close();
