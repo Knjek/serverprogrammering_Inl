@@ -30,7 +30,7 @@ public class Student
 
     @Override
     public String toString() {
-        return name + " lives at: " + address.toString();
+        return name + " lives at " + address.toString();
     }
 
     public int getId() {

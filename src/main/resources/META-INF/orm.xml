@@ -8,9 +8,13 @@
 
     <!--  this is used in the chapter on HQL, where we write a named query -->
     <!--  please ignore it until then! -->
-<named-query name="searchByName">
-    <query>from Student as student where student.name= :name</query>
-</named-query>
+    <named-query name="searchByName">
+        <query>from Student as student where student.name= :name</query>
+    </named-query>
+
+    <named-query name="salaryGreaterThan">
+        <query>from Tutor as tutor where tutor.salary &gt; :salary</query>
+    </named-query>
 
 </entity-mappings>
 
