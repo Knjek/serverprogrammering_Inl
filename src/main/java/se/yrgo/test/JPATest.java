@@ -22,17 +22,15 @@ public class JPATest {
         System.out.println("\nTask 1:");
         Subject science = em.find(Subject.class, 2);
 
-        TypedQuery<Tutor> query = em.createQuery(
-                "from Tutor as tutor where :subject member of tutor.subjectsToTeach", Tutor.class);
+        Query query = em.createQuery(
+                "select tutor.teachingGroup from Tutor as tutor where :subject member of tutor.subjectsToTeach");
         query.setParameter("subject", science);
 
-        List<Tutor> scienceTutors = query.getResultList();
+        List<Student> students = query.getResultList();
 
         System.out.println("-Students who's tutor teach science-");
-        for (Tutor tutor : scienceTutors) {
-            for (Student student : tutor.getTeachingGroup()) {
+        for (Student student : students) {
                 System.out.println(student);
-            }
         }
 
         // Task 2
